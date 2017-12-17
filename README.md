@@ -1,2 +1,2 @@
 # qlsuarts
-List available serial ports (UARTs)
+Lists available serial ports (UARTs)
