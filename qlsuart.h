@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include <QSerialPortInfo>
+#include <QTimer>
+#include <QProcess>
+#include <QSettings>
+
+#include "qlsconfig.h"
 
 namespace Ui {
 class Widget;
@@ -19,8 +24,15 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void OnRefreshTimerExpired();
+    void OnCellDoubleClicked(int row, int col);
+    void OnConfigureClicked();
+
 private:
     Ui::Widget *ui;
+    QTimer *refreshTimer;
+    qlsconfig *configDialog;
 };
 
 #endif // QLSUART_H

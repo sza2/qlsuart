@@ -15,8 +15,11 @@ CONFIG += c++11
 
 
 SOURCES += main.cpp\
-        qlsuart.cpp
+        qlsuart.cpp \
+    qlsconfig.cpp
 
-HEADERS  += qlsuart.h
+HEADERS  += qlsuart.h \
+    qlsconfig.h
 
-FORMS    += qlsuart.ui
+FORMS    += qlsuart.ui \
+    qlsconfig.ui

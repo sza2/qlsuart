@@ -6,23 +6,36 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    const auto serialPortInfos = QSerialPortInfo::availablePorts();
+    configDialog = new qlsconfig;
+
+    QSettings settings("qlsuart", "qlsuart");
+    if(settings.value("cmd0").isValid()) {
+        configDialog->setCmd0(settings.value("cmd0").toString());
+    }
+    if(settings.value("cmd1").isValid()) {
+        configDialog->setCmd1(settings.value("cmd1").toString());
+    }
+    if(settings.value("cmd2").isValid()) {
+        configDialog->setCmd2(settings.value("cmd2").toString());
+    }
+    refreshTimer = new QTimer;
+    ui->tblSerialPorts->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    ui->tblSerialPorts->setSelectionMode(QAbstractItemView::NoSelection);
     ui->tblSerialPorts->setColumnCount(8);
     QFont widgetFont = ui->tblSerialPorts->font();
     QFontMetrics fm(widgetFont);
 
     int itemLocation = 0;
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("ttyACM000"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("00000000000000"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("Status00"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("Manufacturer00"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("CP2104 USB to UART Bridge Controller000000"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("0x00000"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("0x00000"));
-    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("/dev/ttyACM00"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("ttyACM00000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("0000000000000000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("Status0000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("Manufacturer0000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("CP2104 USB to UART Bridge Controller00000000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("0x0000000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("0x0000000"));
+    ui->tblSerialPorts->setColumnWidth(itemLocation++, fm.width("/dev/ttyACM0000"));
 
-
-    ui->tblSerialPorts->setRowCount(serialPortInfos.count());
     ui->tblSerialPorts->verticalHeader()->hide();
     this->setFixedWidth(
                 ui->tblSerialPorts->columnWidth(0) +
@@ -35,6 +48,37 @@ Widget::Widget(QWidget *parent) :
                 ui->tblSerialPorts->columnWidth(7) +
                 8
                 );
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(OnRefreshTimerExpired()));
+    connect(ui->tblSerialPorts, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(OnCellDoubleClicked(int,int)));
+    refreshTimer->start(500);
+
+}
+
+Widget::~Widget()
+{
+    delete ui;
+}
+
+void Widget::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
+
+void Widget::OnRefreshTimerExpired()
+{
+    QFont widgetFont = ui->tblSerialPorts->font();
+    QFontMetrics fm(widgetFont);
+
+    const auto serialPortInfos = QSerialPortInfo::availablePorts();
+
+    ui->tblSerialPorts->setRowCount(serialPortInfos.count());
 
     const QString blankString = "N/A";
     QString description;
@@ -82,23 +126,54 @@ Widget::Widget(QWidget *parent) :
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.systemLocation());
 
+        ui->tblSerialPorts->setRowHeight(portCount, fm.height() + 4);
+
         portCount++;
     }
 }
 
-Widget::~Widget()
+void Widget::OnCellDoubleClicked(int row, int col)
 {
-    delete ui;
+    Qt::KeyboardModifiers modifiers  = QApplication::queryKeyboardModifiers();
+    QString portLocation = ui->tblSerialPorts->item(row, 7)->text();
+    QString commandLine;
+
+    if(!(modifiers.testFlag(Qt::AltModifier) || modifiers.testFlag(Qt::ControlModifier) || modifiers.testFlag(Qt::ShiftModifier))) {
+        commandLine = configDialog->getCmd0();
+        if(commandLine.indexOf("{devicename}") != -1) {
+            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
+        }
+    }
+    if(modifiers.testFlag(Qt::ControlModifier)){
+        commandLine = configDialog->getCmd1();
+        if(commandLine.indexOf("{devicename}") != -1) {
+            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
+        }
+    }
+    if(modifiers.testFlag(Qt::ShiftModifier)){
+        commandLine = configDialog->getCmd2();
+        if(commandLine.indexOf("{devicename}") != -1) {
+            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
+        }
+    }
+    QProcess::startDetached(commandLine);
 }
 
-void Widget::changeEvent(QEvent *e)
+void Widget::OnConfigureClicked()
 {
-    QWidget::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
+    QString cmd0 = configDialog->getCmd0();
+    QString cmd1 = configDialog->getCmd1();
+    QString cmd2 = configDialog->getCmd2();
+    configDialog->setModal(true);
+    configDialog->exec();
+    if(configDialog->result() == QDialog::Accepted) {
+        QSettings settings("qlsuart", "qlsuart");
+        settings.setValue("cmd0", configDialog->getCmd0());
+        settings.setValue("cmd1", configDialog->getCmd1());
+        settings.setValue("cmd2", configDialog->getCmd2());
+    } else {
+        configDialog->setCmd0(cmd0);
+        configDialog->setCmd1(cmd1);
+        configDialog->setCmd2(cmd2);
     }
 }
