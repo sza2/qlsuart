@@ -1,5 +1,6 @@
 #include "qlsuart.h"
 #include "ui_qlsuart.h"
+#include <QDebug>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -136,27 +137,31 @@ void Widget::OnCellDoubleClicked(int row, int col)
 {
     Qt::KeyboardModifiers modifiers  = QApplication::queryKeyboardModifiers();
     QString portLocation = ui->tblSerialPorts->item(row, 7)->text();
+    QString portName = ui->tblSerialPorts->item(row, 0)->text();
+    QString portNumber = ui->tblSerialPorts->item(row, 0)->text().remove(QRegExp("[A-Za-z]."));
     QString commandLine;
 
     if(!(modifiers.testFlag(Qt::AltModifier) || modifiers.testFlag(Qt::ControlModifier) || modifiers.testFlag(Qt::ShiftModifier))) {
         commandLine = configDialog->getCmd0();
-        if(commandLine.indexOf("{devicename}") != -1) {
-            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
-        }
     }
     if(modifiers.testFlag(Qt::ControlModifier)){
         commandLine = configDialog->getCmd1();
-        if(commandLine.indexOf("{devicename}") != -1) {
-            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
-        }
     }
     if(modifiers.testFlag(Qt::ShiftModifier)){
         commandLine = configDialog->getCmd2();
-        if(commandLine.indexOf("{devicename}") != -1) {
-            commandLine.replace("{devicename}", portLocation, Qt::CaseSensitive);
-        }
+    }
+
+    if(commandLine.indexOf("{devicename}") != -1) {
+        commandLine.replace("{devicename}", portName, Qt::CaseSensitive);
+    }
+    if(commandLine.indexOf("{devicelocation}") != -1) {
+        commandLine.replace("{devicelocation}", portLocation, Qt::CaseSensitive);
+    }
+    if(commandLine.indexOf("{devicenumber}") != -1) {
+        commandLine.replace("{devicenumber}", portNumber, Qt::CaseSensitive);
     }
     QProcess::startDetached(commandLine);
+    ui->lineLastExecutedCommand->setText(commandLine);
 }
 
 void Widget::OnConfigureClicked()
