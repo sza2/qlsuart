@@ -9,11 +9,11 @@ The basic function of this simple tool is to search for serial port and list the
 
 It can replace the following strings with the actual port related values:
 
-{devicename} replaced by device name ex.: COM10 (Windows) or ttyS10 (Linux)
-{devicelocation} replaced by device location ex.: \\.\COM10 or /dev/ttyS10
-{devicenumber} replaced by device number ex.: 10 - makes sense only for teraterm, this was introduced due to teraterm's unlogical command line parameter (/C=10 instead of /C=COM10)
+- {devicename} replaced by device name ex.: COM10 (Windows) or ttyS10 (Linux)
+- {devicelocation} replaced by device location ex.: \\.\COM10 or /dev/ttyS10
+- {devicenumber} replaced by device number ex.: 10 - makes sense only for teraterm, this was introduced due to teraterm's unlogical command line parameter (/C=10 instead of /C=COM10)
 
 Command line examples:
 
-xterm -e minicom -D {devicelocation}
-"c:\Program Files (x86)\teraterm\ttermpro.exe" /BAUDRATE=115200 /C={devicenumber}
+- xterm -e minicom -D {devicelocation}
+- "c:\Program Files (x86)\teraterm\ttermpro.exe" /BAUDRATE=115200 /C={devicenumber}
