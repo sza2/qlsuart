@@ -138,7 +138,7 @@ void Widget::OnCellDoubleClicked(int row, int col)
     Qt::KeyboardModifiers modifiers  = QApplication::queryKeyboardModifiers();
     QString portLocation = ui->tblSerialPorts->item(row, 7)->text();
     QString portName = ui->tblSerialPorts->item(row, 0)->text();
-    QString portNumber = ui->tblSerialPorts->item(row, 0)->text().remove(QRegExp("[A-Za-z]."));
+    QString portNumber = ui->tblSerialPorts->item(row, 0)->text().remove(QRegExp("[A-Za-z]"));
     QString commandLine;
 
     if(!(modifiers.testFlag(Qt::AltModifier) || modifiers.testFlag(Qt::ControlModifier) || modifiers.testFlag(Qt::ShiftModifier))) {
