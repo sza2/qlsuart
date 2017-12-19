@@ -1,4 +1,4 @@
-# qlsuarts
+# qlsuart
 Lists available serial ports (UARTs)
 
 The basic function of this simple tool is to search for serial port and list them. Additionally, there are configurable command lines to set up multiple terminal programs to execute:
