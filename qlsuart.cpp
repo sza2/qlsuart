@@ -1,6 +1,10 @@
 #include "qlsuart.h"
 #include "ui_qlsuart.h"
-#include <QDebug>
+
+bool SortSerialPorts(const QSerialPortInfo &s1, const QSerialPortInfo &s2)
+{
+    return s1.portName() < s2.portName();
+}
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -77,7 +81,8 @@ void Widget::OnRefreshTimerExpired()
     QFont widgetFont = ui->tblSerialPorts->font();
     QFontMetrics fm(widgetFont);
 
-    const auto serialPortInfos = QSerialPortInfo::availablePorts();
+    auto serialPortInfos = QSerialPortInfo::availablePorts();
+    std::sort(serialPortInfos.begin(), serialPortInfos.end(), SortSerialPorts);
 
     ui->tblSerialPorts->setRowCount(serialPortInfos.count());
 
