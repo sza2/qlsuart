@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>145</height>
+    <width>592</width>
+    <height>256</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,13 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Use {devicename} in the text field to be replaced with actual port name</string>
+          <string>{devicename} replaced by device name ex.: COM10 (Windows) or ttyS10 (Linux)
+{devicelocation} replaced by device location ex.: \\.\COM10 or /dev/ttyS10
+{devicenumber} replaced by device number ex.: 10
+
+Example:
+&quot;c:\Program Files (x86)\teraterm\ttermpro.exe&quot; /BAUDRATE=115200 /C={devicenumber}
+xterm -e minicom -D {devicelocation} -b 115200</string>
          </property>
         </widget>
        </item>
