@@ -14,8 +14,8 @@
    <string>Dialog</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>resources/qlsuart.png</normaloff>resources/qlsuart.png</iconset>
+   <iconset resource="qlsuart.qrc">
+    <normaloff>:/resources/qlsuart.png</normaloff>:/resources/qlsuart.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
@@ -94,7 +94,9 @@ xterm -e minicom -D {devicelocation} -b 115200</string>
   <tabstop>editCmd1</tabstop>
   <tabstop>editCmd2</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="qlsuart.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

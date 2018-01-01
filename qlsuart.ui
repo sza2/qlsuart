@@ -20,8 +20,8 @@
    <string>Serial ports</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>resources/qlsuart.png</normaloff>resources/qlsuart.png</iconset>
+   <iconset resource="qlsuart.qrc">
+    <normaloff>:/resources/qlsuart.png</normaloff>:/resources/qlsuart.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -77,7 +77,7 @@
          </font>
         </property>
         <property name="textAlignment">
-         <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         <set>AlignCenter</set>
         </property>
        </column>
        <column>
@@ -190,7 +190,9 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="qlsuart.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btnConfigureTerminal</sender>

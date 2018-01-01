@@ -23,3 +23,5 @@ HEADERS  += qlsuart.h \
 
 FORMS    += qlsuart.ui \
     qlsconfig.ui
+
+RESOURCES = qlsuart.qrc

@@ -14,10 +14,10 @@
    sodipodi:docname="qlsuart.svg"
    viewBox="0 0 28.144332 28.14"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    width="100%"
    height="100%"
-   inkscape:export-filename="/home/tszabo/Nextcloud/Projects/qt/qlsuart/git/qlsuarts/resources/qlsuart.png"
+   inkscape:export-filename="C:\home\tszabo\Projects\qt\qlsuart\qlsuarts\resources\qlsuart.png"
    inkscape:export-xdpi="51.164829"
    inkscape:export-ydpi="51.164829">
   <defs
@@ -120,18 +120,18 @@
      id="base"
      bordercolor="#666666"
      inkscape:pageshadow="2"
-     inkscape:window-y="24"
+     inkscape:window-y="-4"
      pagecolor="#ffffff"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-smooth-nodes="true"
      inkscape:window-maximized="1"
      inkscape:zoom="22.627417"
-     inkscape:window-x="0"
-     inkscape:window-height="974"
+     inkscape:window-x="-4"
+     inkscape:window-height="1003"
      showgrid="true"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="18.667054"
+     inkscape:cx="11.065656"
      inkscape:cy="14.743341"
      inkscape:object-nodes="true"
      inkscape:window-width="1680"
@@ -149,17 +149,24 @@
        snapvisiblegridlinesonly="true"
        type="xygrid"
        empspacing="5"
-       originx="-9.9278365px"
-       originy="-12px"
+       originx="-10.589692"
+       originy="-12.8"
        dotted="false"
-       spacingx="0.1px"
-       spacingy="0.1px" />
+       spacingx="0.10666666"
+       spacingy="0.10666667" />
   </sodipodi:namedview>
   <g
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      transform="translate(-9.9278365,-1012.26)">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect840"
+       width="28.266665"
+       height="28.266668"
+       x="10.00481"
+       y="1012.1334" />
     <g
        id="g3813">
       <path
@@ -228,14 +235,14 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <cc:license
-           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
         <dc:publisher>
           <cc:Agent
              rdf:about="http://openclipart.org/">
             <dc:title>Openclipart</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/publicdomain/">
