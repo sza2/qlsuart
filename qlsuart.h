@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QProcess>
 #include <QSettings>
+#include <QCollator>
 
 #include "qlsconfig.h"
 
