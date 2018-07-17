@@ -1,5 +1,6 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-    <file>resources/qlsuart.png</file>
-</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>resources/qlsuart.png</file>
+        <file>resources/qlsuart.svg</file>
+    </qresource>
 </RCC>
