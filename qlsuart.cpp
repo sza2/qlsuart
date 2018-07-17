@@ -103,34 +103,42 @@ void Widget::OnRefreshTimerExpired()
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.portName());
+        pCell->setToolTip(serialPortInfo.portName());
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!serialNumber.isEmpty() ? serialNumber : blankString);
+        pCell->setToolTip(!serialNumber.isEmpty() ? serialNumber : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.isBusy() ? "Busy" : "Free");
+        pCell->setToolTip(serialPortInfo.isBusy() ? "Busy" : "Free");
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!manufacturer.isEmpty() ? manufacturer : blankString);
+        pCell->setToolTip(!manufacturer.isEmpty() ? manufacturer : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!description.isEmpty() ? description : blankString);
+        pCell->setToolTip(!description.isEmpty() ? description : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.hasVendorIdentifier() ? QString("0x%1").arg(serialPortInfo.vendorIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
+        pCell->setToolTip(serialPortInfo.hasVendorIdentifier() ? QString("0x%1").arg(serialPortInfo.vendorIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.hasProductIdentifier() ? QString("0x%1").arg(serialPortInfo.productIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
+        pCell->setToolTip(serialPortInfo.hasProductIdentifier() ? QString("0x%1").arg(serialPortInfo.productIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.systemLocation());
+        pCell->setToolTip(serialPortInfo.systemLocation());
 
         ui->tblSerialPorts->setRowHeight(portCount, fm.height() + 4);
 
