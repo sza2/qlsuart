@@ -1,5 +1,6 @@
 #include "qlsuart.h"
 #include "ui_qlsuart.h"
+#include <QClipboard>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -48,8 +49,19 @@ Widget::Widget(QWidget *parent) :
                 ui->tblSerialPorts->columnWidth(7) +
                 8
                 );
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(OnRefreshTimerExpired()));
-    connect(ui->tblSerialPorts, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(OnCellDoubleClicked(int,int)));
+
+    contextMenu = new QMenu(this);
+    QAction *copyAction = new QAction(tr("copy"), this);
+    contextMenu->addAction(copyAction);
+
+    connect(ui->tblSerialPorts, &QTableWidget::customContextMenuRequested, [=](const QPoint &pos) {
+        (void)pos;
+        contextMenu->exec(QCursor::pos());
+    });
+    connect(copyAction, &QAction::triggered, this, &Widget::copyRequested);
+
+    connect(refreshTimer, &QTimer::timeout, this, &Widget::OnRefreshTimerExpired);
+    connect(ui->tblSerialPorts, &QTableWidget::cellDoubleClicked, this, &Widget::OnCellDoubleClicked);
     refreshTimer->start(500);
 
 }
@@ -148,6 +160,7 @@ void Widget::OnRefreshTimerExpired()
 
 void Widget::OnCellDoubleClicked(int row, int col)
 {
+    (void)col;
     Qt::KeyboardModifiers modifiers  = QApplication::queryKeyboardModifiers();
     QString portLocation = ui->tblSerialPorts->item(row, 7)->text();
     QString portName = ui->tblSerialPorts->item(row, 0)->text();
@@ -176,6 +189,12 @@ void Widget::OnCellDoubleClicked(int row, int col)
     QProcess::startDetached(commandLine);
     ui->lineLastExecutedCommand->setText(commandLine);
 }
+
+void Widget::copyRequested(){
+    QClipboard *p_Clipboard = QApplication::clipboard();
+    p_Clipboard->setText(ui->tblSerialPorts->currentItem()->text());
+}
+
 
 void Widget::OnConfigureClicked()
 {

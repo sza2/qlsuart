@@ -43,6 +43,9 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTableWidget" name="tblSerialPorts">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
