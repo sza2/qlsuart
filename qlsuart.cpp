@@ -1,5 +1,6 @@
 #include "qlsuart.h"
 #include "ui_qlsuart.h"
+#include <QClipboard>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -48,8 +49,19 @@ Widget::Widget(QWidget *parent) :
                 ui->tblSerialPorts->columnWidth(7) +
                 8
                 );
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(OnRefreshTimerExpired()));
-    connect(ui->tblSerialPorts, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(OnCellDoubleClicked(int,int)));
+
+    contextMenu = new QMenu(this);
+    QAction *copyAction = new QAction(tr("copy"), this);
+    contextMenu->addAction(copyAction);
+
+    connect(ui->tblSerialPorts, &QTableWidget::customContextMenuRequested, [=](const QPoint &pos) {
+        (void)pos;
+        contextMenu->exec(QCursor::pos());
+    });
+    connect(copyAction, &QAction::triggered, this, &Widget::copyRequested);
+
+    connect(refreshTimer, &QTimer::timeout, this, &Widget::OnRefreshTimerExpired);
+    connect(ui->tblSerialPorts, &QTableWidget::cellDoubleClicked, this, &Widget::OnCellDoubleClicked);
     refreshTimer->start(500);
 
 }
@@ -103,34 +115,42 @@ void Widget::OnRefreshTimerExpired()
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.portName());
+        pCell->setToolTip(serialPortInfo.portName());
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!serialNumber.isEmpty() ? serialNumber : blankString);
+        pCell->setToolTip(!serialNumber.isEmpty() ? serialNumber : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.isBusy() ? "Busy" : "Free");
+        pCell->setToolTip(serialPortInfo.isBusy() ? "Busy" : "Free");
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!manufacturer.isEmpty() ? manufacturer : blankString);
+        pCell->setToolTip(!manufacturer.isEmpty() ? manufacturer : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(!description.isEmpty() ? description : blankString);
+        pCell->setToolTip(!description.isEmpty() ? description : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.hasVendorIdentifier() ? QString("0x%1").arg(serialPortInfo.vendorIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
+        pCell->setToolTip(serialPortInfo.hasVendorIdentifier() ? QString("0x%1").arg(serialPortInfo.vendorIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.hasProductIdentifier() ? QString("0x%1").arg(serialPortInfo.productIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
+        pCell->setToolTip(serialPortInfo.hasProductIdentifier() ? QString("0x%1").arg(serialPortInfo.productIdentifier(), 4, 16, QLatin1Char('0')) : blankString);
 
         pCell = new QTableWidgetItem;
         ui->tblSerialPorts->setItem(portCount, itemLocation++, pCell);
         pCell->setText(serialPortInfo.systemLocation());
+        pCell->setToolTip(serialPortInfo.systemLocation());
 
         ui->tblSerialPorts->setRowHeight(portCount, fm.height() + 4);
 
@@ -140,6 +160,7 @@ void Widget::OnRefreshTimerExpired()
 
 void Widget::OnCellDoubleClicked(int row, int col)
 {
+    (void)col;
     Qt::KeyboardModifiers modifiers  = QApplication::queryKeyboardModifiers();
     QString portLocation = ui->tblSerialPorts->item(row, 7)->text();
     QString portName = ui->tblSerialPorts->item(row, 0)->text();
@@ -168,6 +189,12 @@ void Widget::OnCellDoubleClicked(int row, int col)
     QProcess::startDetached(commandLine);
     ui->lineLastExecutedCommand->setText(commandLine);
 }
+
+void Widget::copyRequested(){
+    QClipboard *p_Clipboard = QApplication::clipboard();
+    p_Clipboard->setText(ui->tblSerialPorts->currentItem()->text());
+}
+
 
 void Widget::OnConfigureClicked()
 {

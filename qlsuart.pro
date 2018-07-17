@@ -25,3 +25,5 @@ FORMS    += qlsuart.ui \
     qlsconfig.ui
 
 RESOURCES = qlsuart.qrc
+
+RC_ICONS = resources/qlsuart.ico

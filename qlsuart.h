@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QCollator>
+#include <QMenu>
 
 #include "qlsconfig.h"
 
@@ -28,12 +29,14 @@ protected:
 private slots:
     void OnRefreshTimerExpired();
     void OnCellDoubleClicked(int row, int col);
+    void copyRequested();
     void OnConfigureClicked();
 
 private:
     Ui::Widget *ui;
     QTimer *refreshTimer;
     qlsconfig *configDialog;
+    QMenu *contextMenu;
 };
 
 #endif // QLSUART_H
