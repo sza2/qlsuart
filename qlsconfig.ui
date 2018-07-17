@@ -64,7 +64,7 @@
 {devicenumber} replaced by device number ex.: 10
 
 Example:
-&quot;c:\Program Files (x86)\teraterm\ttermpro.exe&quot; /BAUDRATE=115200 /C={devicenumber}
+&quot;c:\Program Files (x86)\teraterm\ttermpro.exe&quot; /BAUD=115200 /C={devicenumber}
 xterm -e minicom -D {devicelocation} -b 115200</string>
          </property>
         </widget>
