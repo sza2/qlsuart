@@ -16,4 +16,4 @@ It can replace the following strings with the actual port related values:
 Command line examples:
 
 - xterm -e minicom -D {devicelocation}
-- "c:\Program Files (x86)\teraterm\ttermpro.exe" /BAUDRATE=115200 /C={devicenumber}
+- "c:\Program Files (x86)\teraterm\ttermpro.exe" /BAUD=115200 /C={devicenumber}
